@@ -84,9 +84,6 @@
     border-top-right-radius: 16px;
     background: var(--menu-bg);
     font-size: 1.1rem;
-    /*outline: auto;
-    outline-color: #d1cfd2;
-    outline-width: 0.1rem;*/
     box-shadow: var(--shadow-bevel);
 }
 
@@ -104,9 +101,6 @@
     width: 940px;
     animation-duration: 500ms;
     border-radius: 1rem;
-    /*outline: auto;
-    outline-color: #d1cfd2;
-    outline-width: 0.1rem;*/
     z-index: -5;
     box-shadow: var(--shadow-bevel);
     display: block;
