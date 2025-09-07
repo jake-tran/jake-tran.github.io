@@ -12,57 +12,19 @@
 </head>
 
 <body>
-    <script>
-        function playSound(file) {
-            var audio = new Audio('sounds/' + file);
-            audio.play();
-        }
-
-        var selectedAppID = "";
-        var selectedApp = -1;
-        
-        document.addEventListener("DOMContentLoaded", function () {
-            const apps = document.getElementsByClassName("app");
-            var appCaption = document.getElementById("caption");
-            var openButton = document.getElementById("open");
-            for (let i=0; i<apps.length; i++){
-                var displayImg = document.createElement('img'); //creates app icon
-                displayImg.src = "assets/appIcons/" + apps[i].dataset.src + ".png";
-                displayImg.classList.add("app-icon");
-                apps[i].appendChild(displayImg); //adds app icon
-                apps[i].addEventListener("click", () => { //adds click function
-                    playSound("select.wav");
-                    if (selectedApp!=i) {
-                        setTimeout(playSound('app/' + apps[i].dataset.src + '.mp3'), 3000);
-                    }
-                    selectedAppID = apps[i].dataset.src;
-                    selectedApp = i;
-                    appCaption.innerHTML = selectedAppID + "<br>Jake Tran";
-                });
-                apps[i].style.left = i*128+50 + "px";
-            }
-
-            openButton.addEventListener("click", () => {
-                playSound("open.wav");
-            });
-            /*addEventListener("click", () => {
-                playSound("SE_CTR_HOME_TOUCH.wav");
-            });*/
-        });
-
-
-
-    </script>
+    <script src="src/home.js"></script>
     <div class="wrapper">
         <div class="screen screen-bottom">
             <br>
-            <div class="menu-bg">
+            <div id="menu-bg">
                 <div class="app" data-src="mii"></div>
                 <div class="app" data-src="healthSafety"></div>
                 <div class="app" data-src="camera"></div>
                 <div class="app" data-src="settings"></div>
             </div>
             <div class="app-caption" id="caption">Mii Maker<br>Jake Tran</div>
+            <div class="scroll" id="scrRight"></div>
+            <div class="scroll" id="scrLeft"></div>
             <div class="main-button" id="open">Open</div>
         </div>
         <div class="screen screen-top">
@@ -75,7 +37,7 @@
     </div>
     Started 09/03/2025
     <img src="assets/appIcons/camera.png"></img>
-    <button type="button" onclick="playSound('app/software.mp3')">
+    <button onclick="playSound('app/software.mp3')">
         Click Me!
     </button>
     <canvas id="myCanvas" width=""></canvas>
