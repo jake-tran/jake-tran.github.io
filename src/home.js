@@ -1,15 +1,25 @@
+
+var loadedAudioNames = [];
+var loadedAudio = [];
+
 function playSound(file) {
-    var audio = new Audio('sounds/' + file);
-    audio.play();
+    //network optimisation for loading audio files
+    if (loadedAudioNames.includes(file) == false) {
+        loadedAudioNames.push(file);
+        loadedAudio.push(new Audio('sounds/' + file));
+        //console.log('found : ' + file);
+        //console.log(loadedAudio);
+    }
+    loadedAudio[loadedAudioNames.indexOf(file)].play();
 }
 
 function returnName(appIn) {
     switch(appIn) {
         case "mii": return "About Mii<br>Jake Tran";
-        case "healthSafety": return "Overview + Achievements<br>Jake Tran";
-        case "camera": return "Work<br>Jake Tran";
+        case "healthSafety": return "Experience + Achievements<br>Jake Tran";
+        case "camera": return "My Work<br>Jake Tran";
         case "settings": return "FAQ<br>Jake Tran";
-        default: return "No ";
+        default: return "No game selected";
     }
 }
 
@@ -21,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const apps = document.getElementsByClassName("app");
     var appCaption = document.getElementById("caption");
     var openButton = document.getElementById("open");
+    var selector = document.getElementById("selector");
     for (let i=0; i<apps.length; i++){
         //creates app icon
         var displayImg = document.createElement('img');
@@ -34,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (selectedApp!=i) {
                     setTimeout(playSound('app/' + apps[i].dataset.src + '.mp3'), 3000);
                 }
+                selector.style.left = apps[i].style.left;
                 //setting variables for later
                 selectedAppID = apps[i].dataset.src;
                 selectedApp = i;
@@ -54,7 +66,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     opacity: 0,
                 }
             ], {
-                duration: 1000,
+                duration: 700,
+                easing: "ease-in",
+                fill: "forwards",
+            });
+            selector.animate([
+                {
+                    transform: "scale(1.5)",
+                    opacity: 0,
+                }
+            ], {
+                duration: 300,
                 easing: "ease-in",
                 fill: "forwards",
             });
@@ -132,12 +154,16 @@ document.addEventListener("DOMContentLoaded", function () {
             //calculates mouse difference
             pos1x = pos2x - e.clientX;
             pos2x = e.clientX;
+            toOld = Math.round(toNew/120)*120;
             toNew -= pos1x;
+            if (toOld!=Math.round(toNew/120)*120) playSound('scroll.wav');
             scrollBg(menuBg, 1000);
             //elmnt.style.left = (elmnt.offsetLeft - pos1x) + "px";
         }
         function closeDragElement() {
             // stop moving when mouse button is released:
+            toNew = Math.round(toNew/120)*120;
+            scrollBg(menuBg,200);
             document.onmouseup = null;
             document.onmousemove = null;
         }
