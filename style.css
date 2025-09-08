@@ -34,7 +34,7 @@
 }
 
 .wrapper {
-    position: absolute;
+    position: relative;
     display: inline-block;
     margin: 0%;
     top: 5%;
@@ -99,7 +99,7 @@
     top: 45px;
     left: 10px;
     height: 230px;
-    width: 940px;
+    width: 820px;
     animation-duration: 500ms;
     border-radius: 1rem;
     z-index: -5;

@@ -1,4 +1,5 @@
 
+
 var loadedAudioNames = [];
 var loadedAudio = [];
 
@@ -28,6 +29,47 @@ var selectedApp = -1;
 var inApp = selectedAppID;
 
 document.addEventListener("DOMContentLoaded", function () {
+    //
+    //DRAG MENU BG
+    //
+    var menuBg = document.getElementById('menu-bg');
+    var toNew=0;
+    dragX(menuBg);
+
+    function scrollBg(elmnt, duration) {
+        if (toNew>0.1) toNew=0;
+        if (toNew<-360) toNew = -360;
+        //shows/hides left scroll
+        if (toNew>-5) {
+            leftScroll.animate(
+                [{transform:"translateX(-50px)"}],
+                {duration:200, easing: "ease-in", fill: "forwards"});
+        } else {
+            leftScroll.animate(
+                [{transform:"translateX(0px)"}],
+                {duration:200, easing: "ease-out", fill: "forwards"});
+        }
+        if (toNew<-355) {
+            rightScroll.animate(
+                [{transform:"translateX(50px)"}],
+                {duration:200, easing: "ease-in", fill: "forwards"});
+        } else {
+            rightScroll.animate(
+                [{transform:"translateX(0px)"}],
+                {duration:200, easing: "ease-out", fill: "forwards"});
+        }
+        elmnt.animate([
+            { transform: "translateX(" + toNew + "px)", }
+        ], {
+            duration: duration,
+            easing: "ease-out",
+            fill: "forwards",
+        });
+    }
+
+    //
+    //APP MENU SETUP
+    //
     const apps = document.getElementsByClassName("app");
     var appCaption = document.getElementById("caption");
     var openButton = document.getElementById("open");
@@ -46,13 +88,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(playSound('app/' + apps[i].dataset.src + '.mp3'), 3000);
                 }
                 selector.style.left = apps[i].style.left;
+                var oappX = apps[i].style.left;
+                var appX = Number(oappX.substring(0,oappX.length-2));
+                if (appX+toNew>360){
+                    toNew = (Math.round(appX/-120)+3)*120;
+                    scrollBg(menuBg, 300);
+                }
+                if (appX+toNew<0){
+                    toNew = (Math.round(appX/-120)+1)*120;
+                    scrollBg(menuBg, 300);
+                }
                 //setting variables for later
                 selectedAppID = apps[i].dataset.src;
                 selectedApp = i;
                 appCaption.innerHTML = returnName(selectedAppID); //creates caption
             }
         });
-        apps[i].style.left = i*125+55 + "px"; //adds the spacing between apps
+        apps[i].style.left = i*120+62.5 + "px"; //adds the spacing between apps
     }
 
     openButton.addEventListener("click", () => {
@@ -82,9 +134,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
-    /*addEventListener("click", () => {
-        playSound("SE_CTR_HOME_TOUCH.wav");
-    });*/
 
     //SCROLL BUTTONS
     var rightScroll = document.getElementById("scrRight");
@@ -92,47 +141,12 @@ document.addEventListener("DOMContentLoaded", function () {
     rightScroll.addEventListener("click", () => {scroll(1);});
     leftScroll.addEventListener("click", () => {scroll(-1);});
     function scroll(dir) {
-        toNew -= 480*dir;
+        toNew -= 360*dir;
         playSound('scroll.wav');
-        scrollBg(menuBg, 400);
+        scrollBg(menuBg, 350);
     }
 
-    //DRAG MENU BG
-    var menuBg = document.getElementById('menu-bg');
-    var toNew=0;
-    dragX(menuBg);
-
-    function scrollBg(elmnt, duration) {
-        if (toNew>0.1) toNew=0;
-        if (toNew<-480) toNew = -480;
-        //shows/hides left scroll
-        if (toNew>-5) {
-            leftScroll.animate(
-                [{transform:"translateX(-50px)"}],
-                {duration:200, easing: "ease-in", fill: "forwards"});
-        } else {
-            leftScroll.animate(
-                [{transform:"translateX(0px)"}],
-                {duration:200, easing: "ease-out", fill: "forwards"});
-        }
-        if (toNew<-475) {
-            rightScroll.animate(
-                [{transform:"translateX(50px)"}],
-                {duration:200, easing: "ease-in", fill: "forwards"});
-        } else {
-            rightScroll.animate(
-                [{transform:"translateX(0px)"}],
-                {duration:200, easing: "ease-out", fill: "forwards"});
-        }
-        elmnt.animate([
-            { transform: "translateX(" + toNew + "px)", }
-        ], {
-            duration: duration,
-            easing: "ease-out",
-            fill: "forwards",
-        });
-    }
-
+    //DRAG MENU FUNCTION
     function dragX(elmnt) {
         var pos1x=0, pos2x=0;
         if (0==1) {
