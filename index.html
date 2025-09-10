@@ -13,27 +13,43 @@
 
 <body>
     <script src="src/home.js"></script>
-    <div class="wrapper">
-        <div class="screen screen-top">
-            <img src="assets/internet.png" class="fake-header left">
-            <img src="assets/battery.png" class="fake-header right">
-            <label style="position: absolute; left: 185px;">Last updated: 09/08/25(Mon)</label>
-            <br>
-            <div class="app-display"></div>
-        </div>
-        <div class="screen screen-bottom">
-            <img src="assets/fakeBar.png" id="fake-bar">
-            <div id="menu-bg">
-                <div class="app" data-src="mii"></div>
-                <div class="app" data-src="healthSafety"></div>
-                <div class="app" data-src="camera"></div>
-                <div class="app" data-src="settings"></div>
-                <img src="assets/selectorSmall.png" id="selector">
+    <div class="container">
+        <div class="displays">
+            <div class="screen screen-top">
+                <img src="assets/internet.png" class="fake-header left">
+                <img src="assets/battery.png" class="fake-header right">
+                <label style="position: absolute; left: 185px;">Last updated: 09/08/25(Mon)</label>
+                <br>
+                <div class="app-display"></div>
+                <div class="app-window" id="mii-app">
+                    <img src="assets/apps/mii/thisismii.png" style="width: 400px; top: 0px;" id="mii-image">
+                </div>
+                <div class="app-window" id="settings-app">
+                    <img src="assets/internet.png" class="fake-header left">
+                    <img src="assets/battery.png" class="fake-header right">
+                    <label style="position: absolute; left: 185px;">Last updated: 09/08/25(Mon)</label>
+                    <br>
+                    <label id="settings-header">Frequently Asked Questions</label>
+                    <div id="settings-top-caption"></div>
+                </div>
             </div>
-            <div class="app-caption" id="caption">No game selected</div>
-            <div class="scroll" id="scrRight"><img src="assets/arrows.png"></div>
-            <div class="scroll" id="scrLeft"><img src="assets/arrows.png"></div>
-            <div class="main-button" id="open">Open</div>
+            <div class="screen screen-bottom">
+                <img src="assets/fakeBar.png" id="fake-bar">
+                <div id="menu-bg">
+                    <div class="app" data-src="mii"></div>
+                    <div class="app" data-src="healthSafety"></div>
+                    <div class="app" data-src="camera"></div>
+                    <div class="app" data-src="settings"></div>
+                    <img src="assets/selector.png" id="selector">
+                </div>
+                <div class="app-caption" id="caption">No game selected</div>
+                <div class="scroll" id="scrRight"><img src="assets/arrows.png"></div>
+                <div class="scroll" id="scrLeft"><img src="assets/arrows.png"></div>
+                <div class="main-button" id="open">Open</div>
+                <div class="app-window" id="mii-app">
+                    <img src="assets/apps/mii/thisismii.png" style="width: 400px; top: 0px;" id="mii-image">
+                </div>
+            </div>
         </div>
     </div>
     Started 09/03/2025

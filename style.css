@@ -11,6 +11,7 @@
     border: none;
     outline: none;
     font-family: "RodinPro";
+    color: #3d3d3d;
     image-rendering: pixelated;
     perspective: 800px;
     -webkit-user-drag: none;
@@ -33,13 +34,21 @@
     --ds-width: 480px;
 }
 
-.wrapper {
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 680px;
+    background: linear-gradient(0deg, #cfcfdb 0%, #efeef4 100%);
+}
+
+.displays {
     position: relative;
     display: inline-block;
-    margin: 0%;
-    top: 5%;
-    left: 50%;
-    transform: translate(-50%, 0%);
+    margin: auto;
+    object-fit: cover;
+    /*transform: translate(-50%, 0%);*/
     width: var(--ds-width); /*3:4*/
     height: 640px;
     background: blue;
@@ -100,7 +109,6 @@
     left: 10px;
     height: 230px;
     width: 820px;
-    animation-duration: 500ms;
     border-radius: 1rem;
     z-index: -5;
     box-shadow: var(--shadow-bevel);
@@ -119,7 +127,7 @@
     align-content: center;
     top: 125px;
     /*transform: translate(12rem, 8rem);*/
-    z-index: 1;
+    z-index: -5;
     background: var(--app-bg);
     box-shadow: var(--shadow-bevel);
 }
@@ -138,8 +146,8 @@
 }
 
 @keyframes scalePulse {
-    0% {transform: scale(1.08);}
-    100% {transform: scale(1.15);}
+    0% {transform: scale(1.28);}
+    100% {transform: scale(1.35);}
 }
 
 #selector {
@@ -149,7 +157,7 @@
     left: -500px;
     width: 95px;
     height: 95px;
-    z-index: 4;
+    z-index: -3;
     animation-name: scalePulse;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
@@ -162,7 +170,7 @@
     top: 60px;
     left: 50%;
     transform: translate(-50%, 0);
-    z-index: -3;
+    z-index: -5;
     width: 80%;
     height: 5.5rem;
     display: flex;
@@ -224,4 +232,60 @@
 #scrLeft {
     left: -70px;
     transform: translateX(-50px);
+}
+
+
+/*apps*/
+
+.app-window {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+/*mii app*/
+
+@keyframes bob {
+    0% {transform: scale(1,1);}
+    100% {transform: scale(1.01,0.99);}
+}
+
+#mii-image {
+    position: absolute;
+    left: 160px;
+    transform-origin: bottom;
+    animation-name: bob;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate-reverse;
+    animation-duration: 1s;
+
+}
+
+/*settings app*/
+
+#settings-app {
+    background-color: #f1e9a3;
+}
+
+#settings-header {
+    position: relative;
+    top: 10px;
+    font-size: 1.5rem;
+    text-shadow: none;
+}
+
+#settings-top-caption {
+    position: absolute;
+    margin:auto;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 60%;
+    border-radius: 10px;
+    background-color: #dcd499;
 }

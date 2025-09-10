@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var appCaption = document.getElementById("caption");
     var openButton = document.getElementById("open");
     var selector = document.getElementById("selector");
+    var displays = document.getElementsByClassName("displays")[0];
     for (let i=0; i<apps.length; i++){
         //creates app icon
         var displayImg = document.createElement('img');
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 selector.style.left = apps[i].style.left;
                 var oappX = apps[i].style.left;
                 var appX = Number(oappX.substring(0,oappX.length-2));
-                if (appX+toNew>360){
+                if (appX+toNew>displays.clientWidth-120){
                     toNew = (Math.round(appX/-120)+3)*120;
                     scrollBg(menuBg, 300);
                 }
@@ -132,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 easing: "ease-in",
                 fill: "forwards",
             });
+            document.getElementById(selectedAppID + "-app").style.display = "block";
         }
     });
 
@@ -147,13 +149,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //DRAG MENU FUNCTION
+        
     function dragX(elmnt) {
         var pos1x=0, pos2x=0;
-        if (0==1) {
-            document.getElementById(elmnt.id + "drag").onmousedown = dragMouseDown;
-        } else {
-            elmnt.onmousedown = dragMouseDown;
-        }
+        
+        elmnt.onmousedown = dragMouseDown;
+
         function dragMouseDown(e) {
             e = e || window.event;
             e.preventDefault();
