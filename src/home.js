@@ -71,10 +71,13 @@ document.addEventListener("DOMContentLoaded", function () {
     //APP MENU SETUP
     //
     const apps = document.getElementsByClassName("app");
-    var appCaption = document.getElementById("caption");
-    var openButton = document.getElementById("open");
-    var selector = document.getElementById("selector");
-    var displays = document.getElementsByClassName("displays")[0];
+    const appCaption = document.getElementById("caption");
+    const openButton = document.getElementById("open");
+    const homeButtons = document.getElementsByClassName("home-button");
+    const fade = document.getElementById("black-fade");
+    const selector = document.getElementById("selector");
+    const choiceEffect = document.getElementById("choice-effect");
+    const displays = document.getElementsByClassName("displays")[0];
     for (let i=0; i<apps.length; i++){
         //creates app icon
         var displayImg = document.createElement('img');
@@ -86,9 +89,15 @@ document.addEventListener("DOMContentLoaded", function () {
             if (inApp=='none') {
                 playSound("select.wav");
                 if (selectedApp!=i) {
-                    setTimeout(playSound('app/' + apps[i].dataset.src + '.mp3'), 3000);
+                    setTimeout(() => {playSound('app/' + apps[i].dataset.src + '.mp3');}, 300);
                 }
+                apps[i].animate([
+                    {transform: "translateY(2px)"},
+                    {transform: "translateY(0px)"}],
+                    {duration:200, easing: "ease-out", fill: "none"}
+                );
                 selector.style.left = apps[i].style.left;
+                choiceEffect.style.left = apps[i].style.left;
                 var oappX = apps[i].style.left;
                 var appX = Number(oappX.substring(0,oappX.length-2));
                 if (appX+toNew>displays.clientWidth-120){
@@ -108,12 +117,31 @@ document.addEventListener("DOMContentLoaded", function () {
         apps[i].style.left = i*120+62.5 + "px"; //adds the spacing between apps
     }
 
+    function fadeTransition() {
+        fade.style.display = "block";
+        setTimeout(() => {fade.animate({opacity: 1}, {duration: 500, easing: "ease-in", fill: "both"});}, 200);
+        setTimeout(() => {fade.animate({opacity: 0}, {duration: 500, easing: "ease-in", fill: "forwards"});}, 700);
+        setTimeout(() => {fade.style.display = "none";}, 1200);
+    }
+
     openButton.addEventListener("click", () => {
         if (selectedAppID!="none") {
             playSound("open.wav");
             inApp=selectedAppID;
             //makes app float away
-            document.getElementsByClassName("app")[selectedApp].animate([
+            choiceEffect.animate([
+                {
+                    opacity: 1,
+                    transform: "scale(0.8,0.8)",
+                }, {
+                    transform: "scale(1.2,1.2)",
+                    opacity: 0,
+                }], {
+                duration: 700,
+                easing: "ease-out",
+                fill: "none"
+            })
+            /*document.getElementsByClassName("app")[selectedApp].animate([
                 {
                     transform: "translateY(-400px)",
                     opacity: 0,
@@ -121,8 +149,10 @@ document.addEventListener("DOMContentLoaded", function () {
             ], {
                 duration: 700,
                 easing: "ease-in",
-                fill: "forwards",
+                fill: "none",
             });
+            setTimeout(() => {document.getElementsByClassName("app")[selectedApp].style.opacity=0;}, 700);
+            */
             selector.animate([
                 {
                     transform: "scale(1.5)",
@@ -131,11 +161,38 @@ document.addEventListener("DOMContentLoaded", function () {
             ], {
                 duration: 300,
                 easing: "ease-in",
-                fill: "forwards",
+                fill: "none",
             });
-            document.getElementById(selectedAppID + "-app").style.display = "block";
+            setTimeout(() => {selector.style.opacity=0;}, 300);
+            
+            fadeTransition();
+            setTimeout(() => {
+                document.getElementById(inApp + "-appTop").style.display = "block";
+                document.getElementById(inApp + "-appBottom").style.display = "block";
+                selector.style.left="-500px";
+                choiceEffect.style.left="-500px";
+            }, 800);
         }
     });
+    for (let i=0; i<homeButtons.length; i++){
+        homeButtons[i].addEventListener("click", () => {
+            if (selectedAppID!="none") {
+                playSound("home.wav");
+                fadeTransition();
+
+                document.getElementById(inApp + "-appTop").style.display = "none";
+                document.getElementById(inApp + "-appBottom").style.display = "none";
+                selector.style.opacity=1;
+
+                document.getElementsByClassName("app")[selectedApp].style.opacity=1;
+
+                inApp="none";
+                selectedAppID="none";
+                selectedApp="none";
+                appCaption.innerHTML = returnName(selectedAppID);
+            }
+        });
+    }
 
     //SCROLL BUTTONS
     var rightScroll = document.getElementById("scrRight");

@@ -21,6 +21,11 @@
     user-select: none;
 }
 
+.li {
+    margin: auto;
+    padding: auto;
+}
+
 :root {
     --bg-colour: #ccc;
     --text-colour: #000;
@@ -97,6 +102,10 @@
     box-shadow: var(--shadow-bevel);
 }
 
+.main-button.dark {
+    color: #797979;
+}
+
 .main-button:hover {
     background: #ccc;
     cursor: pointer;
@@ -163,6 +172,19 @@
     animation-timing-function: ease-in-out;
     animation-direction: alternate-reverse;
     animation-duration: 1s;
+}
+
+#choice-effect {
+    position: absolute;
+    display: block;
+    top: 125px;
+    left: 0px;
+    width: 95px;
+    height: 95px;
+    border-radius: 47.5px;
+    z-index: -3;
+    opacity: 0;
+    background: radial-gradient(rgba(50,255,190,0) 10%,rgba(50,255,190,1) 100%);
 }
 
 .app-caption {
@@ -237,10 +259,21 @@
 
 /*apps*/
 
+#black-fade {
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: #000;
+    display: none;
+    opacity: 0;
+    border-radius: 0.5rem;
+}
+
 .app-window {
     position: absolute;
     top: 0px;
     left: 0px;
+    z-index: 10;
     width: 100%;
     height: 100%;
     display: none;
@@ -265,9 +298,55 @@
 
 }
 
+/*health Safety app*/
+#healthSafety-appTop {
+    background: #e2e2ea;
+}
+
+#healthSafety-appBottom {
+    background: #e2e2ea;
+}
+
+#healthSafety-center-label {
+    position: absolute;
+    text-align: center;
+    font-size: 1.4rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.healthSafety-header {
+    position: absolute;
+    text-align: center;
+    color: white;
+    font-size: 1.1rem;
+    width: 100%;
+    height: 40px;
+    background: black;
+}
+
+.healthSafety-textContainer {
+    position: absolute;
+    top: 40px;
+    font-size: 1.1rem;
+    line-height: 150%;
+    padding: 1.5rem;
+    width: 100%;
+    height: 85%;
+    overflow: scroll;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+
 /*settings app*/
 
-#settings-app {
+#settings-appTop {
+    background-color: #f1e9a3;
+}
+#settings-appBottom {
     background-color: #f1e9a3;
 }
 
@@ -286,6 +365,6 @@
     transform: translateX(-50%);
     width: 90%;
     height: 60%;
-    border-radius: 10px;
+    border-radius: var(--screen-radius);
     background-color: #dcd499;
 }
