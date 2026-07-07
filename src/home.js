@@ -18,7 +18,7 @@ function returnName(appIn) {
     switch(appIn) {
         case "mii": return "About Mii<br>Jake Tran";
         case "healthSafety": return "Experience + Achievements<br>Jake Tran";
-        case "camera": return "My Work<br>Jake Tran";
+        case "camera": return "My Work (Gallery)<br>Jake Tran";
         case "settings": return "FAQ<br>Jake Tran";
         default: return "No game selected";
     }
@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //APP MENU SETUP
     //
     const apps = document.getElementsByClassName("app");
+    const appsEmpty = document.getElementsByClassName("app-empty");
     const appCaption = document.getElementById("caption");
     const openButton = document.getElementById("open");
     const homeButtons = document.getElementsByClassName("home-button");
@@ -78,43 +79,49 @@ document.addEventListener("DOMContentLoaded", function () {
     const selector = document.getElementById("selector");
     const choiceEffect = document.getElementById("choice-effect");
     const displays = document.getElementsByClassName("displays")[0];
-    for (let i=0; i<apps.length; i++){
-        //creates app icon
-        var displayImg = document.createElement('img');
-        displayImg.src = "assets/appIcons/" + apps[i].dataset.src + ".png";
-        displayImg.classList.add("app-icon");
+    for (let i=0; i<apps.length+appsEmpty.length; i++){
+            
+        if (i<apps.length) {
+            //creates app icon
+            var displayImg = document.createElement('img');
+            displayImg.src = "assets/appIcons/" + apps[i].dataset.src + ".png";
+            displayImg.classList.add("app-icon");
 
-        apps[i].appendChild(displayImg); //adds app icon
-        apps[i].addEventListener("click", () => { //adds click function
-            if (inApp=='none') {
-                playSound("select.wav");
-                if (selectedApp!=i) {
-                    setTimeout(() => {playSound('app/' + apps[i].dataset.src + '.mp3');}, 300);
+            apps[i].appendChild(displayImg); //adds app icon
+            apps[i].addEventListener("click", () => { //adds click function
+                if (inApp=='none') {
+                    playSound("select.wav");
+                    if (selectedApp!=i) {
+                        setTimeout(() => {playSound('app/' + apps[i].dataset.src + '.mp3');}, 300);
+                    }
+                    apps[i].animate([
+                        {transform: "translateY(2px)"},
+                        {transform: "translateY(0px)"}],
+                        {duration:200, easing: "ease-out", fill: "none"}
+                    );
+                    selector.style.left = apps[i].style.left;
+                    choiceEffect.style.left = apps[i].style.left;
+                    var oappX = apps[i].style.left;
+                    var appX = Number(oappX.substring(0,oappX.length-2));
+                    if (appX+toNew>displays.clientWidth-120){
+                        toNew = (Math.round(appX/-120)+3)*120;
+                        scrollBg(menuBg, 300);
+                    }
+                    if (appX+toNew<0){
+                        toNew = (Math.round(appX/-120)+1)*120;
+                        scrollBg(menuBg, 300);
+                    }
+                    //setting variables for later
+                    selectedAppID = apps[i].dataset.src;
+                    selectedApp = i;
+                    appCaption.innerHTML = returnName(selectedAppID); //creates caption
                 }
-                apps[i].animate([
-                    {transform: "translateY(2px)"},
-                    {transform: "translateY(0px)"}],
-                    {duration:200, easing: "ease-out", fill: "none"}
-                );
-                selector.style.left = apps[i].style.left;
-                choiceEffect.style.left = apps[i].style.left;
-                var oappX = apps[i].style.left;
-                var appX = Number(oappX.substring(0,oappX.length-2));
-                if (appX+toNew>displays.clientWidth-120){
-                    toNew = (Math.round(appX/-120)+3)*120;
-                    scrollBg(menuBg, 300);
-                }
-                if (appX+toNew<0){
-                    toNew = (Math.round(appX/-120)+1)*120;
-                    scrollBg(menuBg, 300);
-                }
-                //setting variables for later
-                selectedAppID = apps[i].dataset.src;
-                selectedApp = i;
-                appCaption.innerHTML = returnName(selectedAppID); //creates caption
-            }
-        });
-        apps[i].style.left = i*120+62.5 + "px"; //adds the spacing between apps
+            });
+            apps[i].style.left = i*120+62.5 + "px"; //adds the spacing between apps
+        } else {
+            ///adds empty apps
+            appsEmpty[i-apps.length].style.left = i*120+62.5+25 + "px"; //adds the spacing between apps
+        }
     }
 
     function fadeTransition() {
@@ -179,17 +186,18 @@ document.addEventListener("DOMContentLoaded", function () {
             if (selectedAppID!="none") {
                 playSound("home.wav");
                 fadeTransition();
+                setTimeout(() => {
+                    document.getElementById(inApp + "-appTop").style.display = "none";
+                    document.getElementById(inApp + "-appBottom").style.display = "none";
+                    selector.style.opacity=1;
 
-                document.getElementById(inApp + "-appTop").style.display = "none";
-                document.getElementById(inApp + "-appBottom").style.display = "none";
-                selector.style.opacity=1;
+                    document.getElementsByClassName("app")[selectedApp].style.opacity=1;
 
-                document.getElementsByClassName("app")[selectedApp].style.opacity=1;
-
-                inApp="none";
-                selectedAppID="none";
-                selectedApp="none";
-                appCaption.innerHTML = returnName(selectedAppID);
+                    inApp="none";
+                    selectedAppID="none";
+                    selectedApp="none";
+                    appCaption.innerHTML = returnName(selectedAppID);
+                }, 700);
             }
         });
     }
@@ -201,6 +209,18 @@ document.addEventListener("DOMContentLoaded", function () {
     leftScroll.addEventListener("click", () => {scroll(-1);});
     function scroll(dir) {
         toNew -= 360*dir;
+        if (dir>0) rightScroll.animate([
+                    {transform: "scale(1.1, 1.1)"},
+                    {transform: "scale(1, 1)"}],
+                    {duration:200, easing: "ease-out", fill: "none"}
+                );
+        else {
+            leftScroll.animate([
+                    {transform: "scale(1.1, 1.1)"},
+                    {transform: "scale(1, 1)"}],
+                    {duration:200, easing: "ease-out", fill: "none"}
+                );
+        }
         playSound('scroll.wav');
         scrollBg(menuBg, 350);
     }
