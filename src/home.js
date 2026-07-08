@@ -1,7 +1,13 @@
-
-
 var loadedAudioNames = [];
 var loadedAudio = [];
+
+const isTouchDevice = () => {
+  return navigator.maxTouchPoints > 0;
+};
+
+const root = document.documentElement;
+var dsWidth = window.getComputedStyle(root).getPropertyValue("--ds-width");
+var dsWidth = Number(dsWidth.substring(0,dsWidth.length-2));
 
 function playSound(file) {
     //network optimisation for loading audio files
@@ -39,7 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function scrollBg(elmnt, duration) {
         if (toNew>0.1) toNew=0;
         if (toNew<-360) toNew = -360;
+        if (isTouchDevice) var offsetMenuBg = (dsWidth-displays.clientWidth)/2;
+        else var offsetMenuBg = 0;
         //shows/hides left scroll
+
         if (toNew>-5) {
             leftScroll.animate(
                 [{transform:"translateX(-50px)"}],
@@ -59,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 {duration:200, easing: "ease-out", fill: "forwards"});
         }
         elmnt.animate([
-            { transform: "translateX(" + toNew + "px)", }
+            { transform: "translateX(" + (toNew-offsetMenuBg) + "px)", }
         ], {
             duration: duration,
             easing: "ease-out",
@@ -120,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
             apps[i].style.left = i*120+62.5 + "px"; //adds the spacing between apps
         } else {
             ///adds empty apps
-            appsEmpty[i-apps.length].style.left = i*120+62.5+25 + "px"; //adds the spacing between apps
+            appsEmpty[i-apps.length].style.left = i*120+62.5+27 + "px"; //adds the spacing between apps
         }
     }
 
@@ -135,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (selectedAppID!="none") {
             playSound("open.wav");
             inApp=selectedAppID;
-            //makes app float away
+            //makes the choice effect after opening
             choiceEffect.animate([
                 {
                     opacity: 1,
@@ -148,18 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 easing: "ease-out",
                 fill: "none"
             })
-            /*document.getElementsByClassName("app")[selectedApp].animate([
-                {
-                    transform: "translateY(-400px)",
-                    opacity: 0,
-                }
-            ], {
-                duration: 700,
-                easing: "ease-in",
-                fill: "none",
-            });
-            setTimeout(() => {document.getElementsByClassName("app")[selectedApp].style.opacity=0;}, 700);
-            */
             selector.animate([
                 {
                     transform: "scale(1.5)",
@@ -260,5 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.onmousemove = null;
         }
     }
+
+    scrollBg(menuBg, 0);
         
 });
